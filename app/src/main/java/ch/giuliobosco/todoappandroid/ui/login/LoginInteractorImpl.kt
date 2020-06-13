@@ -5,11 +5,11 @@ import ch.giuliobosco.todoappandroid.repository.Repository
 import ch.giuliobosco.todoappandroid.util.ApiError
 import ch.giuliobosco.todoappandroid.util.MySharedPreferences
 
-class LoginInteractorImpl(private val presenter: LoginPresenter) : LoginInteractor {
+class LoginInteractorImpl(private val presenter: LoginPresenter): LoginInteractor {
     @SuppressLint("CheckResult")
     override fun login(username: String, password: String) {
         Repository.login(username, password)
-            .subscribe({result ->
+            .subscribe({ result ->
                 presenter.onSuccess()
                 MySharedPreferences.saveToken(result.token)
             }, { error ->

@@ -7,15 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import ch.giuliobosco.todoappandroid.R
-import kotlinx.android.synthetic.main.dialog_task_delete.*
-import java.lang.ClassCastException
+import kotlinx.android.synthetic.main.delete_task_dialog.*
 
-interface DeleteTaskListener {
-    fun deleteTask(id: Int)
-}
-
-class DeleteTaskDialog : DialogFragment() {
-    private lateinit var myListener : DeleteTaskListener
+class DeleteTaskDialog: DialogFragment() {
+    private lateinit var listener: DeleteTaskListener
 
     companion object {
         private const val EXTRA_ID = "id"
@@ -23,7 +18,7 @@ class DeleteTaskDialog : DialogFragment() {
         private const val EXTRA_DESCRIPTION = "description"
         const val TAG = "delete_dialog"
 
-        fun newInstance(id: Int, title:String, description:String):DeleteTaskDialog {
+        fun newInstance(id: Int, title: String, description: String): DeleteTaskDialog {
             val fragment = DeleteTaskDialog()
 
             val args = Bundle()
@@ -39,18 +34,14 @@ class DeleteTaskDialog : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.let {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.WRAP_CONTENT
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
             it.window?.setLayout(width, height)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_task_delete, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.delete_task_dialog, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,7 +55,7 @@ class DeleteTaskDialog : DialogFragment() {
         tvDescription.text = description
 
         btnOk.setOnClickListener {
-            id?.let { myListener.deleteTask(it) }
+            id?.let { listener.deleteTask(it) }
             dismiss()
         }
 
@@ -77,9 +68,13 @@ class DeleteTaskDialog : DialogFragment() {
         super.onAttach(context)
 
         try {
-            myListener = context as DeleteTaskListener
+            listener = context as DeleteTaskListener
         } catch (error: ClassCastException) {
             throw ClassCastException(error.message)
         }
     }
+}
+
+interface DeleteTaskListener {
+    fun deleteTask(id: Int)
 }

@@ -9,14 +9,13 @@ import androidx.fragment.app.DialogFragment
 import ch.giuliobosco.todoappandroid.R
 import ch.giuliobosco.todoappandroid.model.Task
 import ch.giuliobosco.todoappandroid.util.Validator
-import kotlinx.android.synthetic.main.dialog_task.*
-import java.lang.ClassCastException
+import kotlinx.android.synthetic.main.task_dialog.*
 import java.util.*
 
-class UpdateTaskDialog : DialogFragment() {
+class UpdateTaskDialog: DialogFragment() {
     private var tmpTask: Task = Task(0, "", "", Date())
-    private lateinit var listener: UpdateTaskListener
-    private  val validator = Validator()
+    private lateinit var myListener: UpdateTaskListener
+    private val validator = Validator()
 
     companion object {
         private const val EXTRA_ID = "id"
@@ -24,7 +23,7 @@ class UpdateTaskDialog : DialogFragment() {
         private const val EXTRA_DESCRIPTION = "description"
         const val TAG = "update_dialog"
 
-        fun newInstance(id:Int, title:String, description:String) : UpdateTaskDialog {
+        fun newInstance(id: Int, title: String, description: String): UpdateTaskDialog {
             val fragment = UpdateTaskDialog()
 
             val args = Bundle()
@@ -40,18 +39,14 @@ class UpdateTaskDialog : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.let {
+            val height = ViewGroup.LayoutParams.WRAP_CONTENT
             val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val hegiht = ViewGroup.LayoutParams.WRAP_CONTENT
-            it.window?.setLayout(width, hegiht)
+            it.window?.setLayout(width, height)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_task, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.task_dialog, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,7 +67,7 @@ class UpdateTaskDialog : DialogFragment() {
             tmpTask.description = etDescription.text.toString()
 
             if (validator.result()) {
-                listener.updateTask(tmpTask.id, tmpTask.title, tmpTask.description)
+                myListener.updateTask(tmpTask.id, tmpTask.title, tmpTask.description)
                 tmpTask.clear()
                 dismiss()
             }
@@ -87,7 +82,7 @@ class UpdateTaskDialog : DialogFragment() {
         super.onAttach(context)
 
         try {
-            listener = context as UpdateTaskListener
+            myListener = context as UpdateTaskListener
         } catch (error: ClassCastException) {
             throw ClassCastException(error.message)
         }
@@ -95,5 +90,5 @@ class UpdateTaskDialog : DialogFragment() {
 }
 
 interface UpdateTaskListener {
-    fun updateTask(id:Int, title:String,description:String)
+    fun updateTask(id: Int, title: String, description: String)
 }

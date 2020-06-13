@@ -1,7 +1,8 @@
 package ch.giuliobosco.todoappandroid.ui.login
 
-class LoginPresenterImpl (val view:LoginView) : LoginPresenter {
-    var interactor:LoginInteractor = LoginInteractorImpl(this)
+class LoginPresenterImpl(val view: LoginView) : LoginPresenter {
+
+    var interactor: LoginInteractor = LoginInteractorImpl(this)
 
     override fun login(username: String, password: String) {
         view.showProgress()

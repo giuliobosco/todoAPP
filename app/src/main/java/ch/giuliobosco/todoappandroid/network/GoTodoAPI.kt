@@ -1,7 +1,7 @@
 package ch.giuliobosco.todoappandroid.network
 
 import android.content.Intent
-import ch.giuliobosco.todoappandroid.TodoAPP
+import ch.giuliobosco.todoappandroid.GoTodo
 import ch.giuliobosco.todoappandroid.model.BasicTask
 import ch.giuliobosco.todoappandroid.model.Login
 import ch.giuliobosco.todoappandroid.model.responses.*
@@ -16,10 +16,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-interface TodoAPPapi {
+interface GoTodoAPI {
     @Headers("No-Authentication: true")
     @POST("/v1/login")
-    fun login(@Body login:Login) : Observable<LoginTokenResponse>
+    fun login(@Body login: Login) : Observable<LoginTokenResponse>
 
     @Headers("No-Authentication: true")
     @POST("/v1/register")
@@ -29,19 +29,19 @@ interface TodoAPPapi {
     fun getAllTask() : Observable<TaskListResponse>
 
     @POST("/v1/todo/create")
-    fun createTask(@Body basicTask: BasicTask):Observable<TaskCreatedResponse>
+    fun createTask(@Body basicTask: BasicTask) : Observable<TaskCreateResponse>
 
     @PUT("/v1/todo/update/{id}")
-    fun update(@Body task: BasicTask, @Path("id") id : Int) : Observable<TaskUpdateResponse>
+    fun update(@Body task: BasicTask, @Path("id") id: Int) : Observable<TaskUpdateResponse>
 
     @DELETE("/v1/todo/delete/{id}")
-    fun delete(@Path("id") id : Int) : Observable<TaskDeleteResponse>
+    fun delete(@Path("id") id: Int) : Observable<TaskDeleteResponse>
 
     companion object {
-        fun create() : TodoAPPapi {
-            val client : OkHttpClient = OkHttpClient.Builder()
+        fun create(): GoTodoAPI {
+            val client: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor {
-                    val header = it.request().header("No-Authentication")
+                    val header= it.request().header("No-Authentication")
                     val token = MySharedPreferences.getToken()
                     val newRequest =
                         if (header == null) {
@@ -57,11 +57,11 @@ interface TodoAPPapi {
                 .addInterceptor{
                     val request = it.request()
                     val response = it.proceed(request)
-                    val intent = Intent(TodoAPP.applicationContext(), LoginActivity::class.java)
+                    val intent = Intent(GoTodo.applicationContext(), LoginActivity::class.java)
                     if (request.header("No-Authentication") == null) {
                         when (response.code()) {
                             401 -> {
-                                TodoAPP.applicationContext().startActivity(intent)
+                                GoTodo.applicationContext().startActivity(intent)
                                 MySharedPreferences.clearToken()
                             }
                         }
@@ -77,7 +77,7 @@ interface TodoAPPapi {
                 .baseUrl(BASE_URL)
                 .build()
 
-            return retrofit.create(TodoAPPapi::class.java)
+            return retrofit.create(GoTodoAPI::class.java)
         }
     }
 }

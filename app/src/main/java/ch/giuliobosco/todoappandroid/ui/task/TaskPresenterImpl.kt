@@ -2,8 +2,8 @@ package ch.giuliobosco.todoappandroid.ui.task
 
 import ch.giuliobosco.todoappandroid.model.Task
 
-class TaskPresenterImpl (private val view:TaskView): TaskPresenter {
-    private val interactor : TaskInteractor = TaskInteractorImpl(this)
+class TaskPresenterImpl(private val view: TaskView): TaskPresenter {
+    private val interactor: TaskInteractor = TaskInteractorImpl(this)
 
     override fun getAllTask() {
         view.showProgress()

@@ -3,7 +3,7 @@ package ch.giuliobosco.todoappandroid.model
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-data class Task (
+data class Task(
     var id: Int,
     var title: String,
     var description: String,
@@ -11,7 +11,7 @@ data class Task (
     var CreatedAt: Date) {
 
     fun clear() {
-       id = 0
+        id = 0
         title = ""
         description = ""
         CreatedAt = Date()

@@ -3,22 +3,22 @@ package ch.giuliobosco.todoappandroid.repository
 import ch.giuliobosco.todoappandroid.model.BasicTask
 import ch.giuliobosco.todoappandroid.model.Login
 import ch.giuliobosco.todoappandroid.model.responses.*
-import ch.giuliobosco.todoappandroid.network.TodoAPPapi
+import ch.giuliobosco.todoappandroid.network.GoTodoAPI
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 object Repository {
-    private val client by lazy { TodoAPPapi.create() }
+    private val client by lazy { GoTodoAPI.create() }
 
-    fun login(username: String, password:String): Observable<LoginTokenResponse> {
+    fun login(username: String, password: String): Observable<LoginTokenResponse> {
         val data = Login(username, password)
         return client.login(data)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun register(username:String, password: String):Observable<BasicResponse> {
+    fun register(username: String, password: String): Observable<BasicResponse> {
         val data = Login(username, password)
         return client.register(data)
             .subscribeOn(Schedulers.io())
@@ -31,21 +31,21 @@ object Repository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun createTask(title:String, description:String) :Observable<TaskCreatedResponse> {
+    fun createTask(title: String, description: String): Observable<TaskCreateResponse> {
         val data = BasicTask(title, description)
         return client.createTask(data)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun updateTask(id: Int, title:String, description :String):Observable<TaskUpdateResponse> {
+    fun updateTask(id: Int, title: String, description: String): Observable<TaskUpdateResponse> {
         val data = BasicTask(title, description)
         return client.update(data, id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun deleteTask(id: Int) : Observable<TaskDeleteResponse> {
+    fun deleteTask(id: Int): Observable<TaskDeleteResponse> {
         return client.delete(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

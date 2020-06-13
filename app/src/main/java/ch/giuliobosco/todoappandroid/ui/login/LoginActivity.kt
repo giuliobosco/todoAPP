@@ -1,13 +1,14 @@
 package ch.giuliobosco.todoappandroid.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import ch.giuliobosco.todoappandroid.R
-import ch.giuliobosco.todoappandroid.ui.task.TaskActivity
+import ch.giuliobosco.todoappandroid.ui.signup.SignupActivity
+import ch.giuliobosco.todoappandroid.ui.task.TasksActivity
 import ch.giuliobosco.todoappandroid.util.MySharedPreferences
 import ch.giuliobosco.todoappandroid.util.Validator
 import ch.giuliobosco.todoappandroid.util.color
@@ -15,8 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(), LoginView {
-
-    lateinit var presenter:LoginPresenter
+    lateinit var presenter: LoginPresenter
     private val validator = Validator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
     }
 
     private fun setupListener() {
-        inputPassword.editText?.setOnEditorActionListener{v, actionId, event ->
+        inputPassword.editText?.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 signin(v)
                 true
@@ -50,8 +50,8 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
     private fun checkLoginToken() {
         val token = MySharedPreferences.getToken()
-        if (!token!!.isEmpty()) {
-            val intent = Intent(this, TaskActivity::class.java)
+        if(!token!!.isEmpty()) {
+            val intent = Intent(this, TasksActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
     }
 
     override fun onSuccess() {
-        val intent = Intent(this, TaskActivity::class.java)
+        val intent = Intent(this, TasksActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -77,14 +77,15 @@ class LoginActivity : AppCompatActivity(), LoginView {
             .show()
     }
 
-    fun signin(view:View) {
+    fun signin(view: View) {
         val username = inputUsername.editText?.text.toString()
         val password = inputPassword.editText?.text.toString()
 
         if (validator.result()) presenter.login(username, password)
     }
 
-    fun signup(view:View) {
+    fun signup(view: View) {
         val intent = Intent(this, SignupActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TodoAPPandroid</string>
+    <string name="app_name">GoTodo!</string>
     <string name="username">User name</string>
     <string name="password">Password</string>
     <string name="signin">Signin</string>

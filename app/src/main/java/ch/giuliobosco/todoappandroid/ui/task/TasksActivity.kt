@@ -1,11 +1,11 @@
 package ch.giuliobosco.todoappandroid.ui.task
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,19 +16,19 @@ import ch.giuliobosco.todoappandroid.ui.task.dialog.*
 import ch.giuliobosco.todoappandroid.util.MySharedPreferences
 import ch.giuliobosco.todoappandroid.util.color
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_task.*
+import kotlinx.android.synthetic.main.activity_tasks.*
 
-class TaskActivity : AppCompatActivity(), TaskView, TaskActionsListener,
-NewTaskListener,
-UpdateTaskListener,
-DeleteTaskListener {
+class TasksActivity : AppCompatActivity(), TaskView, TaskActionsListener,
+    NewTaskListener,
+    UpdateTaskListener,
+    DeleteTaskListener {
 
     private lateinit var presenter: TaskPresenter
     private lateinit var adapter: TaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_task)
+        setContentView(R.layout.activity_tasks)
 
         presenter = TaskPresenterImpl(this)
         initUI()
@@ -57,7 +57,7 @@ DeleteTaskListener {
         setupSwipe()
         getAllTask()
 
-        adapter.registerAdapterDataObserver(object :RecyclerView.AdapterDataObserver() {
+        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
                 checkEmptyAdapter()
@@ -96,12 +96,12 @@ DeleteTaskListener {
             noTaskView.visibility = View.GONE
             rvTask.visibility = View.VISIBLE
         }
+
     }
 
-    fun showTaskDialog(view:View) {
+    fun showTaskDialog(view: View) {
         val ft = supportFragmentManager.beginTransaction()
         val prev = supportFragmentManager.findFragmentByTag(NewTaskDialog.TAG)
-
         prev?.let { ft.remove(it) }
         ft.addToBackStack(null)
 
@@ -188,6 +188,6 @@ DeleteTaskListener {
 }
 
 interface TaskActionsListener {
-    fun showUpdateDialog(task:Task)
-    fun showDeleteDialog(task:Task)
+    fun showUpdateDialog(task: Task)
+    fun showDeleteDialog(task: Task)
 }

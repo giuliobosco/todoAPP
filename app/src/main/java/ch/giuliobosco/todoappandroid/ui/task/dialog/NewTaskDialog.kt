@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import ch.giuliobosco.todoappandroid.R
 import ch.giuliobosco.todoappandroid.util.Validator
-import kotlinx.android.synthetic.main.dialog_task.*
-import java.lang.ClassCastException
+import kotlinx.android.synthetic.main.task_dialog.*
 
-class NewTaskDialog : DialogFragment() {
+class NewTaskDialog: DialogFragment() {
     private lateinit var listener: NewTaskListener
     private val validator = Validator()
 
@@ -26,24 +25,22 @@ class NewTaskDialog : DialogFragment() {
         super.onStart()
 
         dialog?.let {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.WRAP_CONTENT
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
             it.window?.setLayout(width, height)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_task, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.task_dialog, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         validator.add(inputLayoutTitle)
+        tvDialogTitle.text = resources.getString(R.string.add_new_task)
+
         btnOk.setOnClickListener {
             val title = inputLayoutTitle.editText?.text.toString()
             val description = inputLayoutDescription.editText?.text.toString()
@@ -53,6 +50,7 @@ class NewTaskDialog : DialogFragment() {
                 dismiss()
             }
         }
+
         btnCancel.setOnClickListener {
             dismiss()
         }
@@ -70,5 +68,5 @@ class NewTaskDialog : DialogFragment() {
 }
 
 interface NewTaskListener {
-    fun createTask(title: String, description:String)
+    fun createTask(title: String, description: String)
 }

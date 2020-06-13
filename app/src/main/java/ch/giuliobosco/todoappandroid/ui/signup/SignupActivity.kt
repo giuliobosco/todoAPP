@@ -1,35 +1,42 @@
 package ch.giuliobosco.todoappandroid.ui.signup
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import ch.giuliobosco.todoappandroid.R
 import ch.giuliobosco.todoappandroid.util.Validator
 import ch.giuliobosco.todoappandroid.util.color
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_signup.*
+import kotlinx.android.synthetic.main.activity_singup.*
 
 class SignupActivity : AppCompatActivity(), SignupView {
-
-    lateinit var presenter : SignupPresenter
+    lateinit var presenter: SignupPresenter
     private val validator = Validator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup)
+        setContentView(R.layout.activity_singup)
+
+        validator
+            .add(inputUsername)
+            .add(inputPassword)
+
+        presenter = SignupPresenterImpl(this)
+        setupToolbar()
+        setupListener()
     }
 
-    fun setupToolBar() {
+    fun setupToolbar() {
         setSupportActionBar(toolbarSignup)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = resources.getString(R.string.signup)
     }
 
     private fun setupListener() {
-        inputPassword.editText?.setOnEditorActionListener {v, actionId, event ->
+        inputPassword.editText?.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 signup(v)
                 true
